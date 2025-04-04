@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicious Bites Restaurant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        :root {
+            --primary-color: #f4a460;
+            --secondary-color: #333;
+            --background-light: #f9f5f0;
+            --text-color: #2c3e50;
+            --menu-hover-color: rgba(244, 164, 96, 0.1);
+        }
+        body {
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-light);
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+            padding: 40px 20px;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23f4a460" fill-opacity="1" d="M0,192L48,208C96,224,192,256,288,250.7C384,245,480,203,576,186.7C672,171,768,181,864,197.3C960,213,1056,235,1152,229.3C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320L192,320L96,320L0,320Z"></path></svg>') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 150px 0;
+        }
+        .menu-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 30px;
+        }
+        .menu-item {
+            width: 300px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            transform: translateY(0);
+        }
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--primary-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .menu-item:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        .menu-item-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+        .menu-item-content {
+            padding: 20px;
+        }
+        .menu-item-content p {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .menu-item-content p::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            border-bottom: 1px dotted var(--secondary-color);
+            opacity: 0.3;
+        }
+        .menu-item-content p span:last-child {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        .reservation-form {
+            max-width: 500px;
+            margin: auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .reservation-form input,
+        .reservation-form select,
+        .reservation-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+        .reservation-form input:focus,
+        .reservation-form select:focus,
+        .reservation-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav a {
+                margin: 10px 0;
+            }
+            .menu-section {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Delicious Bites Restaurant</h1>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#reservation">Reservation</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h2>Welcome to Delicious Bites</h2>
+            <p>Exquisite cuisine, unforgettable dining experience</p>
+            <button id="reserveNow">Reserve Now</button>
+        </div>
+    </section>
+
+    <section id="menu" class="container">
+        <h2 class="section-title">Our Menu</h2>
+        <div class="menu-section">
+            <div class="menu-item">
+                <div class="menu-item-header">Appetizers</div>
+                <div class="menu-item-content">
+                    <p><span>Bruschetta</span><span>$8</span></p>
+                    <p><span>Calamari</span><span>$12</span></p>
+                    <p><span>Soup of the Day</span><span>$6</span></p>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">Main Courses</div>
+                <div class="menu-item-content">
+                    <p><span>Grilled Salmon</span><span>$24</span></p>
+                    <p><span>Beef Tenderloin</span><span>$28</span></p>
+                    <p><span>Vegetarian Pasta</span><span>$18</span></p>
+                </div>
+            </div>
+            <div class="menu-item">
+                <div class="menu-item-header">Desserts</div>
+                <div class="menu-item-content">
+                    <p><span>Chocolate Lava Cake</span><span>$10</span></p>
+                    <p><span>Tiramisu</span><span>$9</span></p>
+                    <p><span>Fresh Fruit Tart</span><span>$8</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservation" class="container">
+        <h2 class="section-title">Make a Reservation</h2>
+        <form class="reservation-form" id="reservationForm">
+            <input type="text" placeholder="Name" required>
+            <input type="email" placeholder="Email" required>
+            <input type="tel" placeholder="Phone Number">
+            <select required>
+                <option value="">Select Number of Guests</option>
+                <option value="1">1 Person</option>
+                <option value="2">2 People</option>
+                <option value="3">3 People</option>
+                <option value="4">4 People</option>
+                <option value="5+">5+ People</option>
+            </select>
+            <input type="date" required>
+            <input type="time" required>
+            <textarea placeholder="Special Requests (Optional)"></textarea>
+            <button type="submit">Submit Reservation</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2024 Delicious Bites Restaurant</p>
+        <p>123 Gourmet Street, Foodie City</p>
+        <p>Phone: (555) 123-4567</p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Reservation Form Handling
+        const reservationForm = document.getElementById('reservationForm');
+        const reserveNowButton = document.getElementById('reserveNow');
+
+        reserveNowButton.addEventListener('click', () => {
+            document.getElementById('reservation').scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+
+        reservationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Reservation submitted! We will contact you soon to confirm.');
+            reservationForm.reset();
+        });
+
+        // Optional: Simple animations
+        const menuItems = document.querySelectorAll('.menu-item');
+        const observerOptions = {
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        menuItems.forEach(item => {
+            item.style.opacity = 0;
+            item.style.transform = 'translateY(20px)';
+            observer.observe(item);
+        });
+    </script>
+</body>
+</html>
